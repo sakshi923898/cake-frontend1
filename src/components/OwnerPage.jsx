@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const backendURL = 'https://cake-backend-t0i0.onrender.com';
+const backendURL = 'https://cake-backend1.onrender.com';
 
 function OwnerPage() {
   const [cakes, setCakes] = useState([]);

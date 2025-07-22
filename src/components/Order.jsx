@@ -12,7 +12,8 @@ function Order() {
 
   const fetchOrders = async () => {
     try {
-      const res = await axios.get('https://cake-backend-t0i0.onrender.com/api/orders');
+      const res = await axios.get('https://cake-backend1.onrender.com/api/orders');
+      // https://cake-backend1.onrender.com
       setOrders(res.data);
     } catch (err) {
       console.error('Error fetching orders:', err);
@@ -22,7 +23,7 @@ function Order() {
   const confirmDelivery = async (orderId) => {
     try {
       setLoading(true);
-      await axios.patch(`https://cake-backend-t0i0.onrender.com/api/orders/${orderId}/confirm`);
+      await axios.patch(`https://cake-backend1.onrender.com/api/orders/${orderId}/confirm`);
       setMessage('Thank you for confirming your delivery!');
       fetchOrders(); // Refresh the list
     } catch (error) {
@@ -45,7 +46,7 @@ function Order() {
             <>
               <h4>Cake: {order.cakeId.name}</h4>
               <img
-                src={`https://cake-backend-t0i0.onrender.com${order.cakeId.imageUrl}`}
+                src={`https://cake-backend1.onrender.com${order.cakeId.imageUrl}`}
                 alt={order.cakeId.name}
                 style={{ width: 150, height: 100, objectFit: 'cover' }}
               />

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const backendURL = 'https://cake-backend-t0i0.onrender.com';
+const backendURL = 'https://cake-backend1.onrender.com';
 
 function CustomerDashboard() {
   const [cakes, setCakes] = useState([]);

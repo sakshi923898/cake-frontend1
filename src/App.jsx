@@ -12,7 +12,10 @@ function App() {
     <>
       <Header />
       <Routes>
-        <Route path="/" element={<CustomerDashboard />} />
+        {/* Use "*" to catch nested routes under "/" */}
+        <Route path="*" element={<CustomerDashboard />} />
+
+        {/* Owner login and dashboard routes */}
         <Route path="/owner/login" element={<OwnerLogin />} />
         <Route path="/owner/dashboard" element={
           <ProtectedOwnerRoute>
