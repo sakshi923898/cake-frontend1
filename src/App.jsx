@@ -17,11 +17,12 @@ function App() {
 
         {/* Owner login and dashboard routes */}
         <Route path="/owner/login" element={<OwnerLogin />} />
-        <Route path="/owner/dashboard" element={
+        <Route path="/ownerpage" element={
           <ProtectedOwnerRoute>
-            <OwnerPage />
+            <OwnerDashboard />
           </ProtectedOwnerRoute>
         } />
+
       </Routes>
       <Footer />
     </>
