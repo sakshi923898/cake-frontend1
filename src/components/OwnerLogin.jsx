@@ -10,26 +10,47 @@ const OwnerLogin = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     try {
       const res = await axios.post('https://cake-backend1.onrender.com/api/owner/login', {
         email,
         password,
       });
 
-      localStorage.setItem('ownerToken', res.data.token); // Store JWT
-      navigate('/owner/dashboard'); // Redirect to dashboard
-    } catch (err) {
-      alert('Invalid login');
+      const token = res.data.token;
+
+      // ✅ Store token in localStorage
+      localStorage.setItem('ownerToken', token);
+
+      // ✅ Navigate to owner dashboard
+      navigate('/owner/dashboard');
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('Login failed. Please check your credentials.');
     }
   };
 
   return (
-    <form onSubmit={handleLogin}>
+    <div>
       <h2>Owner Login</h2>
-      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
-      <button type="submit">Login</button>
-    </form>
+      <form onSubmit={handleLogin}>
+        <input
+          type="email"
+          placeholder="Owner Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        /><br />
+        <input
+          type="password"
+          placeholder="Owner Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        /><br />
+        <button type="submit">Login</button>
+      </form>
+    </div>
   );
 };
 
