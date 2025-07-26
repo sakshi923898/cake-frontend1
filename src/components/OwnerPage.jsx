@@ -17,10 +17,11 @@ function OwnerPage() {
     image: null,
   });
 
-  useEffect(() => {
-    fetchCakes();
-    fetchOrders();
-  }, []);
+ useEffect(() => {
+  axios.get(`${backendURL}/api/orders`)
+    .then(res => setOrders(res.data));
+}, []);
+
 
   const fetchCakes = async () => {
     try {
@@ -132,6 +133,7 @@ function OwnerPage() {
                   {currentOrders.map(order => (
                     <tr key={order._id}>
                       <td>{order.customerName}</td>
+                      <td>{order.contactNumber}</td> 
                       <td>{order.contact}</td>
                       <td>{order.address}</td>
                       <td>
