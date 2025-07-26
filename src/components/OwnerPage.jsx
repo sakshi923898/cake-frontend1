@@ -132,7 +132,7 @@ function OwnerPage() {
                   {currentOrders.map(order => (
                     <tr key={order._id}>
                       <td>{order.customerName}</td>
-                      <td>{order.contactNumber}</td>
+                      <td>{order.contact}</td>
                       <td>{order.address}</td>
                       <td>
                         {order.cakeId ? (
