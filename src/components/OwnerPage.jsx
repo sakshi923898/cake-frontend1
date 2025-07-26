@@ -32,13 +32,20 @@ function OwnerPage() {
   };
 
   const fetchOrders = async () => {
-    try {
-      const res = await axios.get(`${backendURL}/api/orders`);
-      setOrders(res.data);
-    } catch (err) {
-      console.error('Error fetching orders:', err);
-    }
-  };
+  try {
+    const token = localStorage.getItem('ownerToken');
+    const res = await axios.get(`${backendURL}/api/orders`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setOrders(res.data);
+  } catch (err) {
+    console.error('Error fetching orders:', err.response?.data || err.message);
+    alert('Order fetch failed. Please try again or login again.');
+  }
+};
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
