@@ -43,7 +43,7 @@ function OwnerPage() {
     formData.append('image', newCake.image);
 
     try {
-      await axios.post('http://localhost:5000/api/cakes', formData);
+      await axios.post(`${backendURL}/api/cakes`, formData);
       alert('Cake added successfully!');
       setNewCake({ name: '', price: '', description: '', image: null });
       fetchCakes();
@@ -56,7 +56,7 @@ function OwnerPage() {
   const handleDeleteCake = async (id) => {
     if (!window.confirm("Are you sure you want to delete this cake?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/cakes/${id}`);
+      await axios.delete(`${backendURL}/api/cakes/${id}`);
       fetchCakes();
     } catch (error) {
       console.error('Error deleting cake:', error);
