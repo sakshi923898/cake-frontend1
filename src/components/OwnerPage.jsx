@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const backendURL = 'https://cake-backend1.onrender.com';
+const backendURL = 'https://cake-backend-t0i0.onrender.com';
 
 function OwnerPage() {
   const [cakes, setCakes] = useState([]);
@@ -32,20 +32,13 @@ function OwnerPage() {
   };
 
   const fetchOrders = async () => {
-  try {
-    const token = localStorage.getItem('ownerToken');
-    const res = await axios.get(`${backendURL}/api/orders`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    setOrders(res.data);
-  } catch (err) {
-    console.error('Error fetching orders:', err.response?.data || err.message);
-    alert('Order fetch failed. Please try again or login again.');
-  }
-};
-
+    try {
+      const res = await axios.get(`${backendURL}/api/orders`);
+      setOrders(res.data);
+    } catch (err) {
+      console.error('Error fetching orders:', err);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
