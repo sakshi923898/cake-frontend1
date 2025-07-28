@@ -134,6 +134,7 @@ function OwnerPage() {
                       <td>{order.customerName}</td>
                       <td>{order.contact}</td>
                       <td>{order.address}</td>
+                      <td>Price: ₹{order.cakeId.price}</td>
                       <td>
                         {order.cakeId ? (
                           <>
