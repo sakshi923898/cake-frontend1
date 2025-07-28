@@ -124,6 +124,7 @@ function OwnerPage() {
                     <th>Customer</th>
                     <th>Contact</th>
                     <th>Address</th>
+                    <th>Price</th>
                     <th>Cake</th>
                     <th>Status</th>
                   </tr>
