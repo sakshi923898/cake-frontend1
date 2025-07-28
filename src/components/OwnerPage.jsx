@@ -32,19 +32,19 @@ function OwnerPage() {
   };
 
   const fetchOrders = async () => {
-    try {
-      const token = localStorage.getItem('ownerToken');
-      const res = await axios.get(`${backendURL}/api/orders`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setOrders(res.data);
-    } catch (err) {
-      console.error('Error fetching orders:', err.response?.data || err.message);
-      alert('Order fetch failed. Please try again or login again.');
-    }
-  };
+  try {
+    const token = localStorage.getItem('ownerToken');
+    const res = await axios.get(`${backendURL}/api/orders`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setOrders(res.data);
+  } catch (err) {
+    console.error('Error fetching orders:', err.response?.data || err.message);
+    alert('Order fetch failed. Please try again or login again.');
+  }
+};
 
 
   const handleChange = (e) => {
@@ -122,9 +122,8 @@ function OwnerPage() {
                 <thead>
                   <tr>
                     <th>Customer</th>
-                    {/* <th>Contact</th> */}
+                    <th>Contact</th>
                     <th>Address</th>
-                    <th>Price</th>
                     <th>Cake</th>
                     <th>Status</th>
                   </tr>
@@ -133,23 +132,20 @@ function OwnerPage() {
                   {currentOrders.map(order => (
                     <tr key={order._id}>
                       <td>{order.customerName}</td>
-                      {/* <td>{order.contact}</td> */}
+                      <td>{order.contact}</td>
                       <td>{order.address}</td>
-                      <td>
-                        {order.cakeId?.price ? `₹${order.cakeId.price}` : 'N/A'}
-                      </td>
+                      <td>Price: ₹{order.cakeId.price}</td>
                       <td>
                         {order.cakeId ? (
                           <>
                             <strong>{order.cakeId.name}</strong><br />
-                            {/* Optional image display */}
                             {/* <img
-              src={`${backendURL}${order.cakeId.imageUrl.startsWith('/') ? order.cakeId.imageUrl : `/uploads/${order.cakeId.imageUrl}`}`}
-              alt={order.cakeId.name}
-              width="80"
-              height="60"
-              style={{ objectFit: 'cover' }}
-            /> */}
+                              src={`${backendURL}${order.cakeId.imageUrl.startsWith('/') ? order.cakeId.imageUrl : `/uploads/${order.cakeId.imageUrl}`}`}
+                              alt={order.cakeId.name}
+                              width="80"
+                              height="60"
+                              style={{ objectFit: 'cover' }}
+                            /> */}
                           </>
                         ) : 'Cake Deleted'}
                       </td>
@@ -157,7 +153,6 @@ function OwnerPage() {
                     </tr>
                   ))}
                 </tbody>
-
               </table>
 
               <div style={{ marginTop: 15 }}>
