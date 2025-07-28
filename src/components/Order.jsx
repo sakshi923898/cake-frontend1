@@ -45,16 +45,16 @@ function Order() {
           {order.cakeId && (
             <>
               <h4>Cake: {order.cakeId.name}</h4>
-              <img
+              {/* <img
                 src={`https://cake-backend1.onrender.com${order.cakeId.imageUrl}`}
                 alt={order.cakeId.name}
                 style={{ width: 150, height: 100, objectFit: 'cover' }}
-              />
+              /> */}
               <p>Price: ₹{order.cakeId.price}</p>
             </>
           )}
           <p><strong>Name:</strong> {order.customerName}</p>
-          <p><strong>contact:</strong> {order.contact}</p>
+          <p><strong>Contact:</strong> {order.contact}</p>
           <p><strong>Address:</strong> {order.address}</p>
           <p><strong>Status:</strong> {order.status}</p>
           {order.status !== 'Delivered' && (
