@@ -35,7 +35,8 @@ function CustomerDashboard() {
         { headers: { 'Content-Type': 'application/json' } }
       );
       setShowConfirmation(true);
-      setOrder({ customerName: '', contact: '', address: '' });
+      // setOrder({ customerName: '', contact: '', address: '' });
+      setOrder({ customerName: '',  address: '' });
       setSelectedCake(null);
     } catch {
       console.error('Error placing order');
@@ -85,7 +86,7 @@ function CustomerDashboard() {
           />
           <br /><br />
           <input name="customerName" placeholder="Your Name" value={order.customerName} onChange={handleOrderChange} /><br />
-          <input name="contact" placeholder="Contact Number" value={order.contact} onChange={handleOrderChange} /><br />
+          {/* <input name="contact" placeholder="Contact Number" value={order.contact} onChange={handleOrderChange} /><br /> */}
           <textarea name="address" placeholder="Delivery Address" value={order.address} onChange={handleOrderChange} /><br />
           <button onClick={handleOrderSubmit}>Submit Order</button>
         </>
