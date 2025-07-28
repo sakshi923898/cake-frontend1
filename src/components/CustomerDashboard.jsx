@@ -25,7 +25,10 @@ function CustomerDashboard() {
   };
 
   const handleOrderSubmit = async () => {
-    if (!order.customerName || !order.contact || !order.address) {
+    // if (!order.customerName || !order.contact || !order.address) {
+    //   return alert("Please fill out all fields before submitting.");
+    // }
+     if (!order.customerName || !order.address) {
       return alert("Please fill out all fields before submitting.");
     }
     try {
