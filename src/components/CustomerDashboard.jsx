@@ -7,7 +7,8 @@ const backendURL = 'https://cake-backend1.onrender.com';
 function CustomerDashboard() {
   const [cakes, setCakes] = useState([]);
   const [selectedCake, setSelectedCake] = useState(null);
-  const [order, setOrder] = useState({ customerName: '', contact: '', address: '' });
+  // const [order, setOrder] = useState({ customerName: '', contact: '', address: '' });
+  const [order, setOrder] = useState({ customerName: '', address: '' });
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
