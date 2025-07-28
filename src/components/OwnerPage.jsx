@@ -138,13 +138,13 @@ function OwnerPage() {
                         {order.cakeId ? (
                           <>
                             <strong>{order.cakeId.name}</strong><br />
-                            <img
+                            {/* <img
                               src={`${backendURL}${order.cakeId.imageUrl.startsWith('/') ? order.cakeId.imageUrl : `/uploads/${order.cakeId.imageUrl}`}`}
                               alt={order.cakeId.name}
                               width="80"
                               height="60"
                               style={{ objectFit: 'cover' }}
-                            />
+                            /> */}
                           </>
                         ) : 'Cake Deleted'}
                       </td>
