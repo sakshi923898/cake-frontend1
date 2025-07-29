@@ -7,8 +7,8 @@ const backendURL = 'https://cake-backend1.onrender.com';
 function CustomerDashboard() {
   const [cakes, setCakes] = useState([]);
   const [selectedCake, setSelectedCake] = useState(null);
-  // const [order, setOrder] = useState({ customerName: '', contact: '', address: '' });
-  const [order, setOrder] = useState({ customerName: '', address: '' });
+  const [order, setOrder] = useState({ customerName: '', contact: '', address: '' });
+  // const [order, setOrder] = useState({ customerName: '', address: '' });
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -26,10 +26,7 @@ function CustomerDashboard() {
   };
 
   const handleOrderSubmit = async () => {
-    // if (!order.customerName || !order.contact || !order.address) {
-    //   return alert("Please fill out all fields before submitting.");
-    // }
-     if (!order.customerName || !order.address) {
+    if (!order.customerName || !order.contact || !order.address) {
       return alert("Please fill out all fields before submitting.");
     }
     try {
@@ -39,8 +36,8 @@ function CustomerDashboard() {
         { headers: { 'Content-Type': 'application/json' } }
       );
       setShowConfirmation(true);
-      // setOrder({ customerName: '', contact: '', address: '' });
-      setOrder({ customerName: '',  address: '' });
+      setOrder({ customerName: '', contact: '', address: '' });
+      // setOrder({ customerName: '',  address: '' });
       setSelectedCake(null);
     } catch {
       console.error('Error placing order');
@@ -90,7 +87,7 @@ function CustomerDashboard() {
           />
           <br /><br />
           <input name="customerName" placeholder="Your Name" value={order.customerName} onChange={handleOrderChange} /><br />
-          {/* <input name="contact" placeholder="Contact Number" value={order.contact} onChange={handleOrderChange} /><br /> */}
+          <input name="contact" placeholder="Contact Number" value={order.contact} onChange={handleOrderChange} /><br />
           <textarea name="address" placeholder="Delivery Address" value={order.address} onChange={handleOrderChange} /><br />
           <button onClick={handleOrderSubmit}>Submit Order</button>
         </>

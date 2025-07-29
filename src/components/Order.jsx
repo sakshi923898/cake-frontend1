@@ -54,7 +54,7 @@ function Order() {
             </>
           )}
           <p><strong>Name:</strong> {order.customerName}</p>
-          {/* <p><strong>Contact:</strong> {order.contact}</p> */}
+          <p><strong>Contact:</strong> {order.contact}</p>
           <p><strong>Address:</strong> {order.address}</p>
           <p><strong>Status:</strong> {order.status}</p>
           {order.status !== 'Delivered' && (
