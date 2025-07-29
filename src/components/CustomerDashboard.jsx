@@ -37,7 +37,6 @@ function CustomerDashboard() {
       );
       setShowConfirmation(true);
       setOrder({ customerName: '', contact: '', address: '' });
-      // setOrder({ customerName: '',  address: '' });
       setSelectedCake(null);
     } catch {
       console.error('Error placing order');
