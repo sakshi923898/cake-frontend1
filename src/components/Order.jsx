@@ -75,114 +75,69 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-// ✅ Define only the backend base URL (no path or query here)
-const backendURL = 'https://cake-backend1.onrender.com';
-
 const Order = () => {
   const [contact, setContact] = useState('');
   const [orders, setOrders] = useState([]);
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [fetched, setFetched] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
 
-  // Load saved contact from localStorage
   useEffect(() => {
-    const savedContact = localStorage.getItem('contact');
-    if (savedContact) {
-      setContact(savedContact);
-    }
+    const saved = localStorage.getItem('contact');
+    if (saved) setContact(saved);
   }, []);
 
   const handleFetchOrders = async () => {
-    if (!contact) {
-      alert('Please enter your contact number.');
-      return;
-    }
+    if (!contact) return alert('Please enter a contact number.');
 
     setLoading(true);
-    setErrorMsg('');
+    setError('');
     setOrders([]);
+
     try {
-      const res = await axios.post(`${backendURL}/api/orders/by-contact`, {
-        contact: contact.trim(),
-      });
-      setOrders(res.data);
-      setFetched(true);
+      const response = await axios.post(
+        'https://cake-backend1.onrender.com/api/orders/by-contact',
+        { contact: contact.trim() }
+      );
+      setOrders(response.data);
       localStorage.setItem('contact', contact.trim());
     } catch (err) {
-      console.error('Error:', err);
-      setErrorMsg('Contact not found. Please place an order first.');
+      console.error('Order fetch error:', err);
+      if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError('Something went wrong while fetching orders.');
+      }
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="container" style={{ maxWidth: '600px', margin: 'auto', paddingTop: '2rem' }}>
-      <h2 style={{ textAlign: 'center' }}>Your Orders</h2>
+    <div style={{ padding: '2rem', maxWidth: '600px', margin: 'auto' }}>
+      <h2>My Orders</h2>
 
-      <div style={{ marginBottom: '1rem', textAlign: 'center' }}>
+      <div>
         <input
           type="text"
-          placeholder="Enter your contact number"
+          placeholder="Enter contact number"
           value={contact}
           onChange={(e) => setContact(e.target.value)}
-          style={{
-            padding: '10px',
-            width: '70%',
-            marginRight: '10px',
-            borderRadius: '5px',
-            border: '1px solid #ccc',
-          }}
         />
-        <button
-          onClick={handleFetchOrders}
-          style={{
-            padding: '10px 20px',
-            borderRadius: '5px',
-            backgroundColor: '#28a745',
-            color: '#fff',
-            border: 'none',
-            cursor: 'pointer',
-          }}
-        >
-          Show My Orders
-        </button>
+        <button onClick={handleFetchOrders}>Fetch Orders</button>
       </div>
 
       {loading && <p>Loading...</p>}
-      {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      {fetched && orders.length === 0 && !loading && (
-        <p>No orders found for this contact.</p>
-      )}
-
-      {orders.length > 0 && (
-        <div>
-          {orders.map((order, index) => (
-            <div
-              key={index}
-              style={{
-                border: '1px solid #ddd',
-                padding: '15px',
-                marginBottom: '1rem',
-                borderRadius: '8px',
-              }}
-            >
-              <img
-                src={order.cakeId?.image}
-                alt={order.cakeId?.name}
-                style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '8px' }}
-              />
-              <h3>{order.cakeId?.name}</h3>
-              <p><strong>Price:</strong> ₹{order.cakeId?.price}</p>
-              <p><strong>Contact:</strong> {order.contact}</p>
-              <p><strong>Status:</strong> {order.status}</p>
-              <p><strong>Ordered on:</strong> {new Date(order.createdAt).toLocaleString()}</p>
-            </div>
-          ))}
-        </div>
-      )}
+      {orders.length > 0 &&
+        orders.map((order, i) => (
+          <div key={i} style={{ border: '1px solid #ccc', marginTop: '1rem', padding: '1rem' }}>
+            <h4>{order.cakeId?.name}</h4>
+            <img src={order.cakeId?.imageUrl} style={{ width: '100%', height: 'auto' }} />
+            <p>Status: {order.status}</p>
+            <p>Ordered on: {new Date(order.createdAt).toLocaleString()}</p>
+          </div>
+        ))}
     </div>
   );
 };
