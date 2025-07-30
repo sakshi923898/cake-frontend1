@@ -87,16 +87,15 @@ const Order = () => {
   }, []);
 
   const handleFetchOrders = async () => {
-    if (!contact) return alert('Please enter a contact number.');
+    if (!contact.trim()) return alert('Please enter a contact number.');
 
     setLoading(true);
     setError('');
     setOrders([]);
 
     try {
-      const response = await axios.post(
-        'https://cake-backend1.onrender.com/api/orders/by-contact',
-        { contact: contact.trim() }
+      const response = await axios.get(
+        `https://cake-backend1.onrender.com/api/orders/by-contact?contact=${contact.trim()}`
       );
       setOrders(response.data);
       localStorage.setItem('contact', contact.trim());
@@ -123,17 +122,24 @@ const Order = () => {
           value={contact}
           onChange={(e) => setContact(e.target.value)}
         />
-        <button onClick={handleFetchOrders}>Fetch Orders</button>
+        <button onClick={handleFetchOrders} disabled={loading}>
+          {loading ? 'Loading...' : 'Fetch Orders'}
+        </button>
       </div>
 
-      {loading && <p>Loading...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {orders.length > 0 &&
         orders.map((order, i) => (
           <div key={i} style={{ border: '1px solid #ccc', marginTop: '1rem', padding: '1rem' }}>
-            <h4>{order.cakeId?.name}</h4>
-            <img src={order.cakeId?.imageUrl} style={{ width: '100%', height: 'auto' }} />
+            <h4>{order.cakeId?.name || 'Cake not found'}</h4>
+            {order.cakeId?.imageUrl && (
+              <img
+                src={order.cakeId.imageUrl}
+                alt={order.cakeId.name}
+                style={{ width: '100%', height: 'auto' }}
+              />
+            )}
             <p>Status: {order.status}</p>
             <p>Ordered on: {new Date(order.createdAt).toLocaleString()}</p>
           </div>
@@ -143,4 +149,3 @@ const Order = () => {
 };
 
 export default Order;
-
