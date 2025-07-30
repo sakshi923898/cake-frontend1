@@ -72,57 +72,52 @@
 // }
 
 // export default Order;
-import React, { useState } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+
 const backendURL = 'https://cake-backend1.onrender.com';
 
-
 function Order() {
-  const [contact, setContact] = useState('');
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-  const [fetched, setFetched] = useState(false);
 
-  const handleFetchOrders = async () => {
-    if (!contact) return alert('Please enter your contact number.');
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const contact = localStorage.getItem('contact');
+      if (!contact) {
+        setErrorMsg('Contact not found. Please place an order first.');
+        return;
+      }
 
-    setLoading(true);
-    try {
-      const res = await axios.post(`${backendURL}/api/orders/by-contact`, { contact });
-      setOrders(res.data);
-      setFetched(true);
-      setErrorMsg('');
-    } catch (err) {
-      console.error('Error:', err);
-      setErrorMsg('Failed to fetch orders.');
-    } finally {
-      setLoading(false);
-    }
-  };
+      setLoading(true);
+      try {
+        const res = await axios.get(`${backendURL}/api/orders/by-contact/${contact}`);
+        setOrders(res.data);
+        setErrorMsg('');
+      } catch (err) {
+        console.error('Fetch error:', err);
+        setErrorMsg('Failed to load your orders.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
 
   return (
     <div style={{ padding: 20 }}>
-      <h2>📦 View Your Orders</h2>
-      <input
-        type="text"
-        placeholder="Enter your contact number"
-        value={contact}
-        onChange={(e) => setContact(e.target.value)}
-        style={{ marginRight: 10 }}
-      />
-      <button onClick={handleFetchOrders}>Show My Orders</button>
-
+      <h2>📦 Your Orders</h2>
       {loading && <p>Loading...</p>}
       {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
-      {fetched && orders.length === 0 && <p>No orders found.</p>}
-
+      {orders.length === 0 && !loading && <p>No orders found.</p>}
       {orders.map((order) => (
-        <div key={order._id} style={{ border: '1px solid #ccc', padding: 10, marginTop: 10 }}>
+        <div key={order._id} style={{ border: '1px solid gray', marginTop: 10, padding: 10 }}>
           <h4>{order.cakeId?.name}</h4>
           <p>Price: ₹{order.cakeId?.price}</p>
           <p>Status: {order.status}</p>
-          <p>Contact: {order.contact}</p>
           <p>Address: {order.address}</p>
         </div>
       ))}
