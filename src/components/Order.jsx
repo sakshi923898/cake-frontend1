@@ -72,11 +72,11 @@
 // }
 
 // export default Order;
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const backendURL = 'http://localhost:5000'; // change if using different backend domain or port
+// ✅ Define only the backend base URL (no path or query here)
+const backendURL = 'https://cake-backend1.onrender.com';
 
 const Order = () => {
   const [contact, setContact] = useState('');
@@ -85,7 +85,7 @@ const Order = () => {
   const [fetched, setFetched] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  // Auto-load contact number from localStorage (if saved from order placement)
+  // Load saved contact from localStorage
   useEffect(() => {
     const savedContact = localStorage.getItem('contact');
     if (savedContact) {
@@ -103,10 +103,12 @@ const Order = () => {
     setErrorMsg('');
     setOrders([]);
     try {
-      const res = await axios.post(`${backendURL}/api/orders/by-contact`, { contact: contact.trim() });
+      const res = await axios.post(`${backendURL}/api/orders/by-contact`, {
+        contact: contact.trim(),
+      });
       setOrders(res.data);
       setFetched(true);
-      localStorage.setItem('contact', contact.trim()); // Save for future
+      localStorage.setItem('contact', contact.trim());
     } catch (err) {
       console.error('Error:', err);
       setErrorMsg('Contact not found. Please place an order first.');
@@ -127,10 +129,10 @@ const Order = () => {
           onChange={(e) => setContact(e.target.value)}
           style={{
             padding: '10px',
-            width: '80%',
+            width: '70%',
             marginRight: '10px',
             borderRadius: '5px',
-            border: '1px solid #ccc'
+            border: '1px solid #ccc',
           }}
         />
         <button
@@ -141,7 +143,7 @@ const Order = () => {
             backgroundColor: '#28a745',
             color: '#fff',
             border: 'none',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
         >
           Show My Orders
@@ -149,7 +151,6 @@ const Order = () => {
       </div>
 
       {loading && <p>Loading...</p>}
-
       {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
 
       {fetched && orders.length === 0 && !loading && (
@@ -165,7 +166,7 @@ const Order = () => {
                 border: '1px solid #ddd',
                 padding: '15px',
                 marginBottom: '1rem',
-                borderRadius: '8px'
+                borderRadius: '8px',
               }}
             >
               <img
@@ -187,3 +188,4 @@ const Order = () => {
 };
 
 export default Order;
+
