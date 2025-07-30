@@ -74,8 +74,8 @@
 // export default Order;
 import React, { useState } from 'react';
 import axios from 'axios';
-
 const backendURL = 'https://cake-backend1.onrender.com';
+
 
 function Order() {
   const [contact, setContact] = useState('');
