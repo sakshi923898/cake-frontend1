@@ -207,7 +207,7 @@ function CustomerDashboard() {
               border: 'none', fontSize: 18, cursor: 'pointer'
             }}>✖</button>
 
-            <h2>Order: {selectedCake.name}</h2>
+            <h2>Cake Name: {selectedCake.name}</h2>
             <img
               src={`${backendURL}${selectedCake.imageUrl}`}
               alt={selectedCake.name}
