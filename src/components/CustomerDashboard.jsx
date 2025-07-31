@@ -208,11 +208,11 @@ function CustomerDashboard() {
             }}>✖</button>
 
             <h2>Cake Name: {selectedCake.name}</h2>
-            <img
+            {/* <img
               src={`${backendURL}${selectedCake.imageUrl}`}
               alt={selectedCake.name}
               style={{ width: '100%', height: 150, objectFit: 'cover', marginBottom: 10 }}
-            />
+            /> */}
 
             <input
               name="customerName"
