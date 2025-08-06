@@ -10,6 +10,9 @@ function OwnerPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const ordersPerPage = 5;
 
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+
   const [newCake, setNewCake] = useState({
     name: '',
     price: '',
@@ -22,6 +25,9 @@ function OwnerPage() {
     fetchOrders();
   }, []);
 
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
   const fetchCakes = async () => {
     try {
       const res = await axios.get(`${backendURL}/api/cakes`);
@@ -101,15 +107,75 @@ function OwnerPage() {
       setCurrentPage(prev => prev - 1);
     }
   };
+  const fetchNotifications = async () => {
+    try {
+      const res = await axios.get(`${backendURL}/api/notifications`);
+      setNotifications(res.data);
+      setUnreadCount(res.data.filter(n => !n.isRead).length);
+    } catch (err) {
+      console.error('Failed to fetch notifications:', err);
+    }
+  };
+
+  const markAsRead = async (id) => {
+    try {
+      await axios.patch(`${backendURL}/api/notifications/${id}/read`);
+      fetchNotifications();
+    } catch (err) {
+      console.error('Failed to mark as read:', err);
+    }
+  };
+
 
   return (
     <div style={{ padding: 20 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>👨‍🍳 Owner Dashboard</h1>
-        <button onClick={() => setShowOrders(!showOrders)}>
-          {showOrders ? '⬅️ Back to Cakes' : '🧾 View Orders'}
-        </button>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <button onClick={() => setShowOrders(!showOrders)}>
+            {showOrders ? '⬅️ Back to Cakes' : '🧾 View Orders'}
+          </button>
+
+          <div style={{ position: 'relative' }}>
+            <span style={{ cursor: 'pointer', fontSize: '24px' }} title="Notifications">
+              🔔
+            </span>
+            {unreadCount > 0 && (
+              <span style={{
+                position: 'absolute',
+                top: -5,
+                right: -5,
+                background: 'red',
+                color: 'white',
+                borderRadius: '50%',
+                width: 18,
+                height: 18,
+                fontSize: 12,
+                textAlign: 'center',
+                lineHeight: '18px'
+              }}>
+                {unreadCount}
+              </span>
+            )}
+          </div>
+        </div>
       </div>
+      {notifications.length > 0 && (
+        <div style={{ marginTop: 10, padding: 10, backgroundColor: '#ffffe0', border: '1px solid #ccc' }}>
+          <h3>🔔 Notifications</h3>
+          {notifications.map((n) => (
+            <div key={n._id} style={{ marginBottom: 8, backgroundColor: n.isRead ? '#f0f0f0' : '#ffe0e0', padding: 8 }}>
+              <span>{n.message}</span>
+              {!n.isRead && (
+                <button onClick={() => markAsRead(n._id)} style={{ marginLeft: 10 }}>
+                  Mark as Read
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
 
       {showOrders ? (
         <>
