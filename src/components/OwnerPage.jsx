@@ -12,6 +12,7 @@ function OwnerPage() {
 
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   const [newCake, setNewCake] = useState({
     name: '',
@@ -24,10 +25,15 @@ function OwnerPage() {
     fetchCakes();
     fetchOrders();
   }, []);
-
+  //feacch notification
   useEffect(() => {
     fetchNotifications();
+    const interval = setInterval(fetchNotifications, 15000); // every 15 sec
+    return () => clearInterval(interval);
   }, []);
+
+
+
   const fetchCakes = async () => {
     try {
       const res = await axios.get(`${backendURL}/api/cakes`);
@@ -111,12 +117,13 @@ function OwnerPage() {
     try {
       const res = await axios.get(`${backendURL}/api/notifications`);
       setNotifications(res.data);
-      setUnreadCount(res.data.filter(n => !n.isRead).length);
+      const unread = res.data.filter(n => !n.isRead).length;
+      setUnreadCount(unread);
     } catch (err) {
       console.error('Failed to fetch notifications:', err);
     }
   };
-
+  
   const markAsRead = async (id) => {
     try {
       await axios.patch(`${backendURL}/api/notifications/${id}/read`);
@@ -137,10 +144,9 @@ function OwnerPage() {
             {showOrders ? '⬅️ Back to Cakes' : '🧾 View Orders'}
           </button>
 
-          <div style={{ position: 'relative' }}>
-            <span style={{ cursor: 'pointer', fontSize: '24px' }} title="Notifications">
-              🔔
-            </span>
+          {/* 🔔 Notification Bell Icon */}
+          <div style={{ position: 'relative', cursor: 'pointer' }} onClick={() => setShowNotifications(!showNotifications)}>
+            <span style={{ fontSize: '24px' }} title="Notifications">🔔</span>
             {unreadCount > 0 && (
               <span style={{
                 position: 'absolute',
@@ -159,9 +165,43 @@ function OwnerPage() {
               </span>
             )}
           </div>
+
+          {/* 🔔 Notification List */}
+          {showNotifications && (
+            <div style={{
+              position: 'absolute',
+              top: '50px',
+              right: '10px',
+              background: 'white',
+              border: '1px solid #ccc',
+              padding: '10px',
+              width: '300px',
+              zIndex: 1000
+            }}>
+              <h4>🔔 Notifications</h4>
+              {notifications.length === 0 ? (
+                <p>No notifications</p>
+              ) : (
+                <ul style={{ listStyle: 'none', padding: 0 }}>
+                  {notifications.map((note) => (
+                    <li key={note._id} style={{ background: note.isRead ? '#f0f0f0' : '#ffe0e0', padding: '6px 10px', marginBottom: '6px' }}>
+                      {note.message} <br />
+                      <small>{new Date(note.createdAt).toLocaleString()}</small>
+                      {!note.isRead && (
+                        <div>
+                          <button onClick={() => markAsRead(note._id)} style={{ marginTop: 4, fontSize: 12 }}>Mark as Read</button>
+                        </div>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
+
         </div>
       </div>
-      {notifications.length > 0 && (
+      {/* {notifications.length > 0 && (
         <div style={{ marginTop: 10, padding: 10, backgroundColor: '#ffffe0', border: '1px solid #ccc' }}>
           <h3>🔔 Notifications</h3>
           {notifications.map((n) => (
@@ -175,7 +215,7 @@ function OwnerPage() {
             </div>
           ))}
         </div>
-      )}
+      )} */}
 
       {showOrders ? (
         <>
