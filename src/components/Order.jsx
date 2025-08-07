@@ -7,6 +7,19 @@ function Order() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
+  //
+      const deleteAllOrders = async () => {
+      try {
+        const res = await axios.delete('http://localhost:5000/api/orders/delete-all');
+        setMessage(res.data.message);
+        setOrders([]); // Clear from UI
+      } catch (err) {
+        console.error('Error deleting orders', err);
+        setMessage('Failed to delete orders');
+      }
+    };
+    //
+
   useEffect(() => {
     fetchOrders();
   }, []);
@@ -68,7 +81,28 @@ function Order() {
               {loading ? 'Confirming...' : 'Confirm Delivery'}
             </button>
           )}
+
+          {/* 🔴 Temporary Delete Button */}
+      <button
+        onClick={deleteAllOrders}
+        style={{ background: 'red', color: 'white', padding: '8px 12px', border: 'none', marginBottom: '15px' }}
+      >
+        Delete All Orders (TEMP)
+      </button>
+
+      {message && <p>{message}</p>}
+
+      {/* Render orders here if any */}
+      {orders.map(order => (
+        <div key={order._id}>
+          <p><strong>{order.customerName}</strong> ordered {order.cakeName}</p>
         </div>
+      ))}
+
+
+        
+        </div>
+      
       ))}
     </div>
   );

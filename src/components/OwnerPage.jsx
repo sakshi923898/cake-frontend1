@@ -14,6 +14,7 @@ function OwnerPage() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [showNotifications, setShowNotifications] = useState(false);
 
+
   const [newCake, setNewCake] = useState({
     name: '',
     price: '',
@@ -154,8 +155,7 @@ function OwnerPage() {
       console.error('Failed to mark as read:', err);
     }
   };
-
-
+  
   return (
     <div style={{ padding: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
