@@ -190,13 +190,13 @@ function OwnerPage() {
           {showNotifications && (
             <div style={{
               position: 'absolute',
-              top: '50px',
+              top: '25px',
               right: '10px',
               background: 'white',
               border: '1px solid #ccc',
               padding: '10px',
-              width: '150px',
-              zIndex: 1000
+              width: '100px',
+              zIndex: 100
             }}>
               <h4>🔔 Notifications</h4>
               {notifications.length === 0 ? (
