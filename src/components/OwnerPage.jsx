@@ -59,7 +59,9 @@ function OwnerPage() {
           Authorization: `Bearer ${token}`,
         },
       });
-      setOrders(res.data);
+      const sortedOrders = res.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setOrders(sortedOrders);
+      //setOrders(res.data);
     } catch (err) {
       console.error('Error fetching orders:', err.response?.data || err.message);
       alert('Order fetch failed. Please try again or login again.');
@@ -247,6 +249,7 @@ function OwnerPage() {
               <table border="1" cellPadding="10" style={{ marginTop: 10, width: '100%', backgroundColor: '#f9f9f9' }}>
                 <thead>
                   <tr>
+                    <th>Date & Time</th> {/* 👈 NEW COLUMN */}
                     <th>Customer</th>
                     <th>Contact</th>
                     <th>Address</th>
@@ -258,6 +261,7 @@ function OwnerPage() {
                 <tbody>
                   {currentOrders.map(order => (
                     <tr key={order._id}>
+                      <td>{new Date(order.createdAt).toLocaleString()}</td>
                       <td>{order.customerName}</td>
                       <td>{order.contact}</td>
                       <td>{order.address}</td>
