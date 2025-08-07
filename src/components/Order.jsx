@@ -1,4 +1,4 @@
- // export default Order;
+// export default Order;
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -39,6 +39,27 @@ function Order() {
     }
   };
 
+
+
+  //tempo
+  const deleteOrder = async (orderId) => {
+    const confirm = window.confirm('Are you sure you want to delete this order?');
+    if (!confirm) return;
+
+    try {
+      await axios.delete(`https://cake-backend1.onrender.com/api/orders/delete/${orderId}`);
+      setOrders(prev => prev.filter(order => order._id !== orderId));
+      setMessage('Order deleted successfully.');
+    } catch (error) {
+      console.error('Error deleting order:', error);
+      setMessage('Failed to delete order.');
+    } finally {
+      setTimeout(() => setMessage(''), 3000);
+    }
+  };
+
+
+
   return (
     <div style={{ padding: 20 }}>
       <h2>Your Orders</h2>
@@ -69,6 +90,14 @@ function Order() {
               {loading ? 'Confirming...' : 'Confirm Delivery'}
             </button>
           )}
+          //tempo
+          <button
+            onClick={() => deleteOrder(order._id)}
+            style={{ marginLeft: 10, backgroundColor: 'red', color: 'white', border: 'none', padding: '6px 10px', cursor: 'pointer' }}
+          >
+            Delete Order
+          </button>
+
 
 
         </div>
