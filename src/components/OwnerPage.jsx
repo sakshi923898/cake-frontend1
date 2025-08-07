@@ -27,10 +27,18 @@ function OwnerPage() {
   }, []);
   //feacch notification
   useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const res = await axios.get(`${backendURL}/api/notifications`);
+        setNotifications(res.data);
+      } catch (err) {
+        console.error('Failed to fetch notifications:', err);
+      }
+    };
+
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 15000); // every 15 sec
-    return () => clearInterval(interval);
   }, []);
+
 
 
 
@@ -123,11 +131,23 @@ function OwnerPage() {
       console.error('Failed to fetch notifications:', err);
     }
   };
-  
+
+  // const markAsRead = async (id) => {
+  //   try {
+  //     await axios.patch(`${backendURL}/api/notifications/${id}/read`);
+  //     fetchNotifications();
+  //   } catch (err) {
+  //     console.error('Failed to mark as read:', err);
+  //   }
+  // };
   const markAsRead = async (id) => {
     try {
-      await axios.patch(`${backendURL}/api/notifications/${id}/read`);
-      fetchNotifications();
+      await axios.put(`${backendURL}/api/notifications/${id}/read`);
+      setNotifications((prev) =>
+        prev.map((note) =>
+          note._id === id ? { ...note, isRead: true } : note
+        )
+      );
     } catch (err) {
       console.error('Failed to mark as read:', err);
     }
@@ -155,9 +175,9 @@ function OwnerPage() {
                 background: 'red',
                 color: 'white',
                 borderRadius: '50%',
-                width: 18,
-                height: 18,
-                fontSize: 12,
+                width: 8,
+                height: 8,
+                fontSize: 8,
                 textAlign: 'center',
                 lineHeight: '18px'
               }}>
