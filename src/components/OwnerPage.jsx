@@ -195,7 +195,7 @@ function OwnerPage() {
               background: 'white',
               border: '1px solid #ccc',
               padding: '10px',
-              width: '300px',
+              width: '150px',
               zIndex: 1000
             }}>
               <h4>🔔 Notifications</h4>
