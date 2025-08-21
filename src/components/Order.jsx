@@ -90,16 +90,7 @@ function Order() {
               {loading ? 'Confirming...' : 'Confirm Delivery'}
             </button>
           )}
-          {/* //tempo
-          <button
-            onClick={() => deleteOrder(order._id)}
-            style={{ marginLeft: 10, backgroundColor: 'red', color: 'white', border: 'none', padding: '6px 10px', cursor: 'pointer' }}
-          >
-            Delete Order
-          </button> */}
-
-
-
+          
         </div>
       ))}
 
