@@ -83,7 +83,8 @@ const OwnerLogin = () => {
       const { token, owner } = res.data;
 
       // ✅ Save token + email
-      localStorage.setItem("ownerToken", token);
+      // localStorage.setItem("ownerToken", token);
+      localStorage.setItem("ownerToken", response.data.token);
       localStorage.setItem("ownerEmail", owner.email);
 
       alert("Login successful!");
