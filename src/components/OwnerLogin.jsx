@@ -20,6 +20,9 @@ const OwnerLogin = () => {
       const res = await axios.post(`${backendURL}/api/owner/login`, {
         email,
         password,
+      },{
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true, // if backend uses cookies
       });
 
       console.log("Login response:", res.data);
