@@ -43,14 +43,26 @@ function OwnerPage() {
 
 
 
+  // const fetchCakes = async () => {
+  //   try {
+  //     const res = await axios.get(`${backendURL}/api/cakes`);
+  //     setCakes(res.data);
+  //   } catch (err) {
+  //     console.error('Error fetching cakes:', err);
+  //   }
+  // };
   const fetchCakes = async () => {
-    try {
-      const res = await axios.get(`${backendURL}/api/cakes`);
-      setCakes(res.data);
-    } catch (err) {
-      console.error('Error fetching cakes:', err);
-    }
-  };
+  try {
+    const token = localStorage.getItem("ownerToken");
+    const res = await axios.get(`${backendURL}/api/cakes`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setCakes(res.data);
+  } catch (err) {
+    console.error("Error fetching cakes:", err);
+  }
+};
+
 
   const fetchOrders = async () => {
     try {
