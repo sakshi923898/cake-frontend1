@@ -11,7 +11,8 @@ const OwnerLogin = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const backendURL = "https://your-backend-url.onrender.com"; // 🔹 Replace with your Render backend URL
+  const backendURL = "https://cake-backend1.onrender.com"; // ✅ your deployed backend URL
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
