@@ -12,36 +12,14 @@ function Order() {
     fetchOrders();
   }, []);
 
-  // const fetchOrders = async () => {
-  //   try {
-  //     const res = await axios.get('https://cake-backend1.onrender.com/api/orders');
-  //     // Only keep orders that are NOT delivered
-  //     const notDeliveredOrders = res.data.filter(order => order.status !== 'Delivered');
-  //     setOrders(notDeliveredOrders);
-  //   } catch (err) {
-  //     console.error('Error fetching orders:', err);
-  //   }
-  // };
   const fetchOrders = async () => {
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        setMessage('Please log in again');
-        return;
-      }
-
-      const res = await axios.get('https://cake-backend1.onrender.com/api/orders/myorders', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setOrders(res.data);
-    } catch (error) {
-      console.error('Error fetching orders:', error);
-      setMessage('Try logging in again');
-    } finally {
-      setLoading(false);
+      const res = await axios.get('https://cake-backend1.onrender.com/api/orders');
+      // Only keep orders that are NOT delivered
+      const notDeliveredOrders = res.data.filter(order => order.status !== 'Delivered');
+      setOrders(notDeliveredOrders);
+    } catch (err) {
+      console.error('Error fetching orders:', err);
     }
   };
 
